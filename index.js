@@ -29,6 +29,28 @@ app.get('/',(req,res)=>{
   res.send('Page is working')
 })
 
+app.post("/shayri",(req,res)=>{
+  let {option} = req.body
+  // console.log(req.body)
+  // console.log(data)
+  try {
+    async function runComplate(option){
+      const completion = await openai.createCompletion({
+        model:"text-davinci-003",
+        prompt:option,
+        max_tokens:2048,
+        temperature:1,
+      });
+      res.send(completion.data.choices[0].text);
+    }
+    runComplate(option)
+  } catch (error) {
+    res.send(
+      'error'
+    )
+  }
+})
+
 app.post("/send",(req,res)=>{
   let {data} = req.body
   // console.log(req.body)
